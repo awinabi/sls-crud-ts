@@ -1,6 +1,6 @@
 # CRUD with Serverless
 
-A User CRUD example with serverless framework.
+A User CRUD example with serverless framework in AWS Lambda and DynamoDB.
 
 ## Development Setup
 
