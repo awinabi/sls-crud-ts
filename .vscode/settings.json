@@ -1,0 +1,26 @@
+{
+    "editor.renderWhitespace": "all",
+    "files.insertFinalNewline": true,
+    "editor.formatOnSave": true,
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "extensions.ignoreRecommendations": true,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "ts": "typescriptreact"
+    },
+    "prettier.tabWidth": 4
+}

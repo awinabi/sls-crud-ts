@@ -1,0 +1,73 @@
+service: sls-crud
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: dev
+    region: us-west-1
+    environment:
+        DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+
+custom:
+    usersTableName: dm2-crud-users-tbl-${self:provider.stage}
+    serverless-offline:
+        resourceRoutes: true
+
+plugins:
+    - serverless-iam-roles-per-function
+    - serverless-dotenv-plugin
+    - serverless-plugin-typescript
+    - serverless-tscpaths
+    - serverless-offline
+
+resources:
+    Resources:
+        UsersTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:custom.usersTableName}
+                AttributeDefinitions:
+                    - AttributeName: PK
+                      AttributeType: S
+                    - AttributeName: SK
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: PK
+                      KeyType: HASH
+                    - AttributeName: SK
+                      KeyType: RANGE
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
+
+functions:
+    getUser:
+        handler: src/users/handlers/get.handle
+        name: get-user
+        memorySize: 128
+        timeout: 5
+        events:
+            - http:
+                  path: users/{userId}
+                  method: GET
+
+        iamRoleStatements:
+            - Effect: "Allow"
+              Action:
+                  - "dynamodb:GetItem"
+              Resource: !GetAtt PostTable.Arn
+    createUser:
+        handler: src/users/handlers/create.handle
+        name: create-user
+        memorySize: 128
+        timeout: 5
+        events:
+            - http:
+                  path: users
+                  method: POST
+
+        iamRoleStatements:
+            - Effect: "Allow"
+              Action:
+                  - "dynamodb:PutItem"
+              Resource: !GetAtt PostTable.Arn
