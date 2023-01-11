@@ -22,4 +22,4 @@ dist/**/*
 *.pyc
 
 # Local DynamoDB setup
-
+dynamodb-local/*
