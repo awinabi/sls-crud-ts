@@ -1,0 +1,32 @@
+service: sls-crud-device
+
+provider:
+    name: aws
+    runtime: nodejs16.x
+    stage: dev
+    region: us-west-1
+    environment:
+        DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+        WS_SERVICE_URL:
+            Fn::Join:
+                - ""
+                - - Ref: WebsocketsApi
+                  - .execute-api.
+                  - Ref: AWS::Region
+                  - .amazonaws.com/
+                  - ${self:provider.stage}
+
+custom:
+    usersTableName: dm2-crud-users-tbl-${self:provider.stage}
+    serverless-offline:
+        resourceRoutes: true
+
+plugins:
+    - serverless-iam-roles-per-function
+    - serverless-dotenv-plugin
+    - serverless-plugin-typescript
+    - serverless-tscpaths
+    - serverless-offline
+
+functions:
+    - ${file(sls-functions/websocket-device.yml)}

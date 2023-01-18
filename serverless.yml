@@ -2,11 +2,19 @@ service: sls-crud
 
 provider:
     name: aws
-    runtime: nodejs14.x
+    runtime: nodejs16.x
     stage: dev
     region: us-west-1
     environment:
         DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+        WS_SERVICE_URL:
+            Fn::Join:
+                - ""
+                - - Ref: WebsocketsApi
+                  - .execute-api.
+                  - Ref: AWS::Region
+                  - .amazonaws.com/
+                  - ${self:provider.stage}
 
 custom:
     usersTableName: dm2-crud-users-tbl-${self:provider.stage}
@@ -41,33 +49,5 @@ resources:
                     WriteCapacityUnits: 1
 
 functions:
-    getUser:
-        handler: src/users/handlers/get.handle
-        name: get-user
-        memorySize: 128
-        timeout: 5
-        events:
-            - http:
-                  path: users/{userId}
-                  method: GET
-
-        iamRoleStatements:
-            - Effect: "Allow"
-              Action:
-                  - "dynamodb:GetItem"
-              Resource: !GetAtt PostTable.Arn
-    createUser:
-        handler: src/users/handlers/create.handle
-        name: create-user
-        memorySize: 128
-        timeout: 5
-        events:
-            - http:
-                  path: users
-                  method: POST
-
-        iamRoleStatements:
-            - Effect: "Allow"
-              Action:
-                  - "dynamodb:PutItem"
-              Resource: !GetAtt PostTable.Arn
+    - ${file(sls-functions/restful.yml)}
+    - ${file(sls-functions/websocket.yml)}

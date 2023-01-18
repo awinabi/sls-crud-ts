@@ -1,0 +1,30 @@
+getUser:
+    handler: src/users/handlers/get.handle
+    name: get-user
+    memorySize: 128
+    timeout: 5
+    events:
+        - http:
+              path: users/{userId}
+              method: GET
+
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+              - "dynamodb:GetItem"
+          Resource: !GetAtt UsersTable.Arn
+createUser:
+    handler: src/users/handlers/create.handle
+    name: create-user
+    memorySize: 128
+    timeout: 5
+    events:
+        - http:
+              path: users
+              method: POST
+
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+              - "dynamodb:PutItem"
+          Resource: !GetAtt UsersTable.Arn
