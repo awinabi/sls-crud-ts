@@ -50,4 +50,5 @@ resources:
 
 functions:
     - ${file(sls-functions/restful.yml)}
-    - ${file(sls-functions/websocket.yml)}
+    - ${file(sls-functions/websocket-user.yml)}
+    - ${file(sls-functions/websocket-device.yml)}
