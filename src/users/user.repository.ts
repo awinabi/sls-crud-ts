@@ -52,4 +52,16 @@ export class UserRepository implements Repository<UserType> {
 
         return userItem.DATA;
     }
+    async list(): Promise<UserType[]> {
+        const params = {
+            TableName: AppEnv.dynamoDbTableName,
+            Key: {},
+            Limit: 10,
+        };
+        const dbResponse = await client.get(params).promise();
+        if (dbResponse.$response.error) {
+            throw new Error("Error to get users...!");
+        }
+        return dbResponse.$response.data;
+    }
 }
