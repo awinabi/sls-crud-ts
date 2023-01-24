@@ -28,3 +28,17 @@ createUser:
           Action:
               - "dynamodb:PutItem"
           Resource: !GetAtt UsersTable.Arn
+listUser:
+    handler: src/users/handlers/list.handle
+    name: list-user
+    memorySize: 128
+    timeout: 5
+    events:
+        - http:
+              path: users
+              method: GET
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+              - "dynamodb:GetItem"
+          Resource: !GetAtt UsersTable.Arn
