@@ -1,5 +1,5 @@
 import { DynamoDB } from "aws-sdk";
-import { unmarshall } from "@aws-sdk/util-dynamodb";
+import { unmarshall, marshall } from "@aws-sdk/util-dynamodb";
 
 import { AppEnv } from "@helpers/env";
 import { Repository } from "@helpers/base.repository";
@@ -52,16 +52,20 @@ export class UserRepository implements Repository<UserType> {
 
         return userItem.DATA;
     }
-    async list(): Promise<UserType[]> {
+    async list(): Promise<unknown> {
         const params = {
             TableName: AppEnv.dynamoDbTableName,
-            Key: {},
-            Limit: 10,
+            Key: marshall({ HashKey: "hashKey" }),
+            Limit: 100,
         };
-        const dbResponse = await client.get(params).promise();
+        const dbResponse = await client.scan(params).promise();
+        console.log(dbResponse);
         if (dbResponse.$response.error) {
             throw new Error("Error to get users...!");
         }
-        return dbResponse.$response.data;
+        if (dbResponse.Items === undefined) {
+            return [];
+        }
+        return dbResponse.Items;
     }
 }

@@ -34,8 +34,11 @@ export const handle = async (
     //     callback(null, response);
     // });
     const listUserRepository = new UserRepository(dynamoClient);
+    console.log(listUserRepository);
+
     try {
         const listUser = await listUserRepository.list();
+        console.log(listUser);
         const response: APIResponse = {
             body: JSON.stringify(listUser),
             statusCode: 201,
