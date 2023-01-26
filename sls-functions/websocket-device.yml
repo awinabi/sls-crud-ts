@@ -1,11 +1,14 @@
 wsDeviceCxnHandler:
+    name: ${self:service}-${self:provider.stage}-wsDeviceCxnHandler
     description: websocket connect
     handler: src/websocket/device-ws-handler.connectDisconnectHandler
     timeout: 15
     events:
         - websocket: $connect
         - websocket: $disconnect
+
 wsDeviceMsgHandler:
+    name: ${self:service}-${self:provider.stage}-wsDeviceMsgHandler
     description: websocket message handler
     handler: src/websocket/device-ws-handler.msgHandler
     timeout: 15

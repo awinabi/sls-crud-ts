@@ -1,11 +1,14 @@
 wsUserCxnHandler:
+    name: ${self:service}-${self:provider.stage}-wsUserCxnHandler
     description: websocket connect
     handler: src/websocket/user-ws-handler.connectDisconnectHandler
     timeout: 15
     events:
         - websocket: $connect
         - websocket: $disconnect
+
 wsUserMsgHandler:
+    name: ${self:service}-${self:provider.stage}-wsUserMsgHandler
     description: websocket message handler
     handler: src/websocket/user-ws-handler.msgHandler
     timeout: 15

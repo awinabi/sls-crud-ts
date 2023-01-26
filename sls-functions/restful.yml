@@ -1,6 +1,6 @@
 getUser:
+    name: ${self:service}-${self:provider.stage}-getUser
     handler: src/users/handlers/get.handle
-    name: get-user
     memorySize: 128
     timeout: 5
     events:
@@ -13,9 +13,10 @@ getUser:
           Action:
               - "dynamodb:GetItem"
           Resource: !GetAtt UsersTable.Arn
+
 createUser:
+    name: ${self:service}-${self:provider.stage}-createUser
     handler: src/users/handlers/create.handle
-    name: create-user
     memorySize: 128
     timeout: 5
     events:
@@ -28,9 +29,10 @@ createUser:
           Action:
               - "dynamodb:PutItem"
           Resource: !GetAtt UsersTable.Arn
+
 listUser:
+    name: ${self:service}-${self:provider.stage}-listUser
     handler: src/users/handlers/list.handle
-    name: list-user
     memorySize: 128
     timeout: 5
     events:

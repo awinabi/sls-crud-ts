@@ -3,7 +3,7 @@ service: sls-crud
 provider:
     name: aws
     runtime: nodejs16.x
-    stage: dev
+    stage: ${opt:stage, 'dev'}
     region: us-west-1
     environment:
         DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
@@ -50,5 +50,4 @@ resources:
 
 functions:
     - ${file(sls-functions/restful.yml)}
-    - ${file(sls-functions/websocket-user.yml)}
-    - ${file(sls-functions/websocket-device.yml)}
+    - ${file(sls-functions/websocket.yml)}
