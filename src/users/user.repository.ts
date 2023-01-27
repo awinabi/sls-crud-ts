@@ -21,9 +21,9 @@ export class UserRepository implements Repository<UserType> {
         throw new Error("Method not implemented.");
     }
 
-    update(id: number, data: unknown): Promise<UserType[]> {
-        throw new Error("Method not implemented.");
-    }
+    // update(id: number, data: unknown): Promise<UserType[]> {
+    //     throw new Error("Method not implemented.");
+    // }
 
     delete(id: number): boolean {
         throw new Error("Method not implemented.");
@@ -67,5 +67,27 @@ export class UserRepository implements Repository<UserType> {
             return [];
         }
         return dbResponse.Items;
+    }
+    async update(data: unknown, id: unknown): Promise<unknown> {
+        console.log("Dataa_____", data);
+
+        console.log(id);
+
+        const params = {
+            TableName: AppEnv.dynamoDbTableName,
+            Key: {
+                id: id,
+            },
+            UpdateExpression: "SET status = :status",
+            ExpressionAttributeValues: {
+                ":status": "FALSE",
+            },
+        };
+        const dbResponse = await client.update(params).promise();
+        console.log(dbResponse);
+        if (dbResponse.$response.error) {
+            throw new Error("Error updating user");
+        }
+        return dbResponse.Attributes;
     }
 }
