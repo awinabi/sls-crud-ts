@@ -12,10 +12,11 @@ export const handle = async (
     callback: APIGatewayProxyCallback
 ): Promise<void> => {
     console.log("user get function");
+    console.log(event.pathParameters?.userId);
     const params = {
         TableName: AppEnv.dynamoDbTableName,
         Key: {
-            id: event.pathParameters?.id,
+            PK: event.pathParameters?.userId,
         },
     };
 

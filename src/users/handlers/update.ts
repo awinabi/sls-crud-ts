@@ -24,7 +24,7 @@ export const handle = async (
         return invalidInputResponse;
     }
     const data = JSON.parse(event.body);
-    const id = event.pathParameters?.id;
+    const id = event.pathParameters?.userId;
     const userUpdateRepositoiry = new UserRepository(dynamoClient);
     try {
         const updateUser = await userUpdateRepositoiry.update(data, id);

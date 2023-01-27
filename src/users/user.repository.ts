@@ -70,18 +70,17 @@ export class UserRepository implements Repository<UserType> {
     }
     async update(data: unknown, id: unknown): Promise<unknown> {
         console.log("Dataa_____", data);
-
         console.log(id);
-
         const params = {
             TableName: AppEnv.dynamoDbTableName,
             Key: {
-                id: id,
+                PK: id,
             },
-            UpdateExpression: "SET status = :status",
+            UpdateExpression: "set DATA = :DATA",
             ExpressionAttributeValues: {
-                ":status": "FALSE",
+                ":DATA": data,
             },
+            ReturnValues: "UPDATED_NEW",
         };
         const dbResponse = await client.update(params).promise();
         console.log(dbResponse);
