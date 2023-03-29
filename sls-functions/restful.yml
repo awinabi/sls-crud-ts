@@ -42,5 +42,19 @@ listUser:
     iamRoleStatements:
         - Effect: "Allow"
           Action:
-              - "dynamodb:GetItem"
+              - "dynamodb:Scan"
+          Resource: !GetAtt UsersTable.Arn
+updatUser:
+    handler: src/users/handlers/update.handle
+    name: update-user
+    memorySize: 128
+    timeout: 5
+    events:
+        - http:
+              path: users/{userId}
+              method: PUT
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+              - "dynamodb:UpdateItem"
           Resource: !GetAtt UsersTable.Arn
