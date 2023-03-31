@@ -35,7 +35,7 @@ export const handle = async (
     const data = JSON.parse(event.body);
     const { error } = UserInputSchema.validate(data);
     if (error) {
-        console.error("payload validation failed");
+        console.error("payload validation failed", error);
         const validationErrorResponse: APIResponse = {
             statusCode: 422,
             body: JSON.stringify({

@@ -15,12 +15,14 @@ export const handle = async (
     const params = {
         TableName: AppEnv.dynamoDbTableName,
         Key: {
-            id: event.pathParameters?.id,
+            "PK": event.pathParameters?.userId,
         },
     };
-
+    
     // fetch from the database
     dynamoClient.get(params, (error, result) => {
+        console.log(params);
+        console.log(result)
         // handle potential errors
         if (error) {
             console.error(error);
