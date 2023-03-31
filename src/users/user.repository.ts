@@ -68,4 +68,23 @@ export class UserRepository implements Repository<UserType> {
         }
         return dbResponse.Items;
     }
+
+    async get(data:any): Promise<unknown> {
+        const params = {
+        TableName: AppEnv.dynamoDbTableName,
+        KeyConditionExpression: 'PK = :userId',
+        ExpressionAttributeValues:  {
+            ':userId': data,
+        }        
+    };
+        const dbResponse = await client.query(params).promise();
+        console.log(dbResponse);
+        if (dbResponse.$response.error) {
+            throw new Error("Error to get users...!");
+        }
+        if (dbResponse.Items === undefined) {
+            return [];
+        }
+        return dbResponse.Items;
+    }
 }

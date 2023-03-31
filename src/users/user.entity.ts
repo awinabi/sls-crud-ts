@@ -8,6 +8,7 @@ export type UserType = {
     username: string;
     firstName: string;
     lastName: string;
+    mobile: number;
 };
 
 export type DynamoEntity<T> = BaseDynamodbEntity & { DATA: T };
@@ -20,6 +21,7 @@ export const UserSchema = Joi.object({
     username: Joi.string().alphanum().min(3).max(30).required(),
     firstName: Joi.string().min(2).required(),
     lastName: Joi.string().min(2).required(),
+    mobile: Joi.number().integer().min(10**9).max(10**10 - 1)
 });
 
 // Example Entry
@@ -35,6 +37,7 @@ export const ExampleUser: UserEntity = {
         username: "johndoe",
         firstName: "John",
         lastName: "Doe",
+        mobile: 9876543021
     },
 };
 
@@ -44,6 +47,7 @@ export type UserInputType = {
     username: string;
     firstName: string;
     lastName: string;
+    mobile: number;
 };
 
 export const UserInputSchema = Joi.object({
@@ -51,6 +55,7 @@ export const UserInputSchema = Joi.object({
     username: Joi.string().alphanum().min(3).max(30).required(),
     firstName: Joi.string().min(2).required(),
     lastName: Joi.string().min(2).required(),
+    mobile: Joi.number().integer().min(10**9).max(10**10 - 1)
 });
 
 export function getFullName(firstName: string, lastName: string) {

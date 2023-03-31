@@ -45,6 +45,8 @@ export const handle = async (
         };
         return response;
     } catch (err) {
+        console.log(err);
+        
         const error = err as Error;
         const errorResponse: APIResponse = {
             statusCode: 500,
